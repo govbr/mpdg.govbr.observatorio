@@ -71,7 +71,7 @@ def link_pratica_pendentes(portal):
             type='Link',
             remoteUrl='${portal_url}/admin-observatorio/pratica-pendentes',
             title='Praticas Pendentes',
-            container=link)
+            container=folder)
 
 def create_folder_contador(portal):
     portal = api.portal.get()
