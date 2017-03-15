@@ -21,13 +21,6 @@
       for="*"
       />
 
-<browser:page
-      name="del_observatorio_folder_2"
-      permission="cmf.ManagePortal"
-      class=".removeobservatorio.RemoveObservatorioFolder2"
-      for="*"
-      />
-
   <browser:page
       name="clear_boaspraticas"
       permission="cmf.ManagePortal"
