@@ -1,0 +1,236 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+
+  <metal:js fill-slot="javascript_head_slot">
+  <!--[if (!IE)|(gte IE 8)]>
+  <!-->
+  <link href="/viewer/viewer-datauri.css" media="screen" rel="stylesheet" type="text/css"
+      tal:attributes="href string:${view/dvstatic}/assets/viewer-datauri.css" />
+  <!--<![endif]-->
+  <!--[if lte IE 7]>
+  <link href="/viewer/viewer.css" media="screen" rel="stylesheet" type="text/css"
+        tal:attributes="href string:${view/dvstatic}/assets/viewer.css" />
+  <![endif]-->
+
+  <script src="/dv_javascript_variables.js"
+      tal:attributes="src string:${portal_url}/dv_javascript_variables.js"></script>
+  <link href="/viewer/printviewer.css" media="print" rel="stylesheet" type="text/css"
+      tal:attributes="href string:${view/dvstatic}/assets/printviewer.css" />
+  <script src="/viewer/viewer.js"
+      tal:attributes="src string:${view/dvstatic}/assets/viewer.js"></script>
+  <script src="/viewer/viewer.js"
+      tal:attributes="src string:${view/dvstatic}/javascripts/viewer.js"></script>
+
+  <tal:annotate tal:condition="view/can_modify">
+    <link rel="stylesheet" type="text/css"
+      tal:attributes="href string:${view/dvstatic}/jquery.imgareaselect/css/imgareaselect-default.css" />
+    <link rel="stylesheet" type="text/css"
+      tal:attributes="href string:${view/dvstatic}/stylesheets/annotate.css" />
+    <script tal:attributes="src string:${view/dvstatic}/jquery.imgareaselect/scripts/jquery.imgareaselect.min.js"></script>
+    <script tal:attributes="src string:${view/dvstatic}/javascripts/annotate.js"></script>
+  </tal:annotate>
+  </metal:js>
+  <metal:css fill-slot="style_slot">
+  <link rel="stylesheet" type="text/css" media="screen" href="group.css"
+        tal:attributes="href string:${context/portal_url}/++resource++dv.resources/stylesheets/viewer.css" />
+  </metal:css>
+
+<body>
+
+<div metal:fill-slot="content-core">
+
+<tal:main-macro metal:define-macro="content-core"
+         tal:define="size python:here.getObjSize(here);
+                     content_type here/get_content_type|here/Format;
+                     view_utils nocall:context/@@utils-view"
+         i18n:domain="collective.documentviewer">
+  <tal:notshow tal:condition="not: view/enabled">
+    <dl id="errorMsg" tal:condition="python: view.can_modify and view.settings.successfully_converted is False">
+      <dt>
+        <a href="#" i18n:translate="">Show Document Viewer Conversion Error</a>
+      </dt>
+      <dd>
+        <pre tal:content="python: view.settings.exception_msg" />
+          <pre tal:content="python: view.settings.exception_traceback" />
+        </dd>
+      </dl>
+    </tal:notshow>
+
+    <div class="document-info">
+      <ul class="no-bullets">
+        <li tal:condition="context/getTipo_arquivo|nothing">
+          <span>Tipo: </span><span tal:content="python:context.vocTipoArquivo().getValue(context.tipo_arquivo)"></span>
+        </li>
+        <li>
+          <span>Adicionado em: </span><span tal:content="python: context.created().strftime('%d/%m/%Y')"></span>
+        </li>
+        <li>
+          <span>Acessos: </span><span tal:content="python: view_utils.getAccessObject(context.meta_type)"></span>
+        </li>
+        <li>
+          <span>Tamanho: </span><span tal:content="size"></span>
+        </li>
+        <li tal:condition="view_utils/getFormatedTags|nothing">
+          <span>Registrado em: </span><span tal:content="view_utils/getFormatedTags|nothing"></span>
+        </li>
+      </ul>
+    </div>
+
+    <tal:show tal:condition="view/enabled">
+      <tal:annotate tal:condition="view/can_modify">
+        <a href="#" id="manage-annotations" i18n:translate="">Manage Annotations</a> |
+        <a href="#" id="manage-sections" i18n:translate="">Manage Sections</a>
+        <div id="annotation-management">
+          <div class="close"><span i18n:translate="">Close</span></div>
+          <div id="image-container">
+          </div>
+          <div id="pagesel-container">
+            <label i18n:translate="">Page:</label>
+            <select id="pselector">
+            </select>
+          </div>
+          <div id="right-container">
+            <div id="add-annotation">
+              <form class="">
+                <legend i18n:translate="">Add Annotation</legend>
+                <p class="discreet" i18n:translate="">Click and drag an area of the image to
+                  select where the annotation should be.</p>
+                <fieldset>
+                  <div class="field">
+                    <label class="formQuestion" for="title">
+                      <span i18n:translate="">Title</span>
+                      <span class="required" i18n:attributes="title" title="Required">&nbsp;</span>
+                    </label>
+                    <div class="formHelp" id="title_help" i18n:translate="">The title of the annotation</div>
+                    <div class="fieldErrorBox"></div>
+                    <input type="text" id="title" size="30" maxlength="255" />
+                  </div>
+                  <div class="field">
+                    <label class="formQuestion" for="text">
+                      <span i18n:translate="">Text</span>
+                      <span class="required" i18n:attributes="title" title="Required">&nbsp;</span>
+                    </label>
+                    <div class="formHelp" id="title_help" i18n:translate="">The text for the annotation. Can include html.</div>
+                    <div class="fieldErrorBox"></div>
+                    <textarea id="text"></textarea>
+                  </div>
+                  <div class="formControls">
+                    <button class="allowMultiSubmit context add" i18n:translate="">Add</button>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div id="annotations">
+              <h3 i18n:translate="">Current Annotations</h3>
+              <ul></ul>
+            </div>
+          </div>
+        </div>
+        <div id="section-management">
+          <div class="close"><span i18n:translate="">Close</span></div>
+          <div id="add-section">
+            <form>
+              <legend i18n:translate="">Add Section</legend>
+              <fieldset>
+                <div class="field">
+                  <label class="formQuestion" for="section-title">
+                    <span i18n:translate="">Title</span>
+                    <span class="required" i18n:attributes="title" title="Required">&nbsp;</span>
+                  </label>
+                  <div class="formHelp" id="title_help" i18n:translate="">The title of the section</div>
+                  <div class="fieldErrorBox"></div>
+                  <input type="text" id="section-title" size="30" maxlength="255" />
+                </div>
+                <div class="field">
+                  <label class="formQuestion" for="section-page">
+                    <span i18n:translate="">Page</span>
+                    <span class="required" i18n:attributes="title" title="Required">&nbsp;</span>
+                  </label>
+                  <div class="formHelp" id="title_help" i18n:translate="">The page the section is for.</div>
+                  <div class="fieldErrorBox"></div>
+                  <input type="text" id="section-page" size="4" maxlength="255" />
+                </div>
+                <div class="formControls">
+                  <button class="allowMultiSubmit context add" i18n:translate="">Add</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div id="sections">
+            <h3 i18n:translate="">Current Sections</h3>
+            <ul></ul>
+          </div>
+        </div>
+      </tal:annotate>
+
+      <div id="DV-container">
+
+      <div class="DV-loadingDocument"><span i18n:translate="">Loading</span></div>
+        <noscript>
+          <div id="DV-noJS" style="height:500px" i18n:translate="">The Document Viewer requires that you enable Javascript.</div>
+        </noscript>
+      </div>
+      <div id="overlay"></div>
+      <script type="text/javascript" tal:content="structure view/javascript"></script>
+
+      <div class="related-itens clearfix"
+           tal:condition="view_utils/getRelatedContent|nothing">
+
+        <div class="title-related">
+          Relacionados
+        </div>
+
+        <tal:rep repeat="item view_utils/getRelatedContent">
+
+          <div class="content-related clearfix">
+
+            <div class="file-type clearfix">
+              <span tal:content="item/tipo_arquivo"></span>
+            </div>
+
+            <div class="file-title clearfix">
+              <a tal:attributes="href item/href">
+                <b tal:content="item/title"></b>
+              </a>
+            </div>
+
+            <div class="file-info clearfix">
+              <div class="ico-filetype-area">
+                  <span tal:content="item/format_file"></span>
+              </div>
+
+              <div>
+                <ul>
+                  <li>
+                    Adicionado em: <span tal:replace="item/created"></span>
+                  </li>
+                  <li>
+                    Acessos: <span tal:replace="item/access_count"></span>
+                  </li>
+                  <li>
+                    Tamanho: <span tal:replace="item/size"></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </tal:rep>
+      </div>
+    </tal:show>
+
+    <p>
+      <metal:field use-macro="python:here.widget('file', mode='view')">File</metal:field>
+    </p>
+  </tal:main-macro>
+</div>
+
+</body>
+
+</html>

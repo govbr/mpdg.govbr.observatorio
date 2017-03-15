@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="mpdg.govbr.observatorio">
+
+      <metal:js fill-slot="javascript_head_slot">
+       <script>
+        function hideWysiwygButtons() {
+            var buttons = [
+                "#form-widgets-description_image", "#form-widgets-description_scembedder",
+                "#form-widgets-description_code"
+            ]
+            buttons.forEach(function(btn) {
+                $(btn).parent().empty();
+            });
+        }
+       $(document).ready(function() {
+           var has_error = $('dl.error');
+           // Se o usuário está logado, abre dialog para exibição dos termos de uso
+           var isanon = $('#main-div').attr('anon');
+           if (isanon == 'False' && has_error.length == 0) {
+               $( "#dialog-confirm" ).dialog({
+                   resizable: false,
+                   height: 600,
+                   width: 600,
+                   modal: true,
+                   open: function(event, ui) {
+                       $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+                   },
+                   buttons: {
+                       'Voltar': function() {
+                           $(this).dialog('close');
+                           window.history.go(-1);
+                       }
+                   }
+               });
+               $("#accept-term").change(function() {
+                  var status = this.checked;
+                  if (status) {
+                      $( "#dialog-confirm" ).dialog( "option", "buttons",
+                        [
+                          {
+                            text: "Cotinuar",
+                            click: function() {
+                              $( this ).dialog( "close" );
+                              hideWysiwygButtons();
+                            }
+                          },
+                          {
+                            text: "Voltar",
+                            click: function() {
+                              $( this ).dialog( "close" );
+                              window.history.go(-1);
+                            }
+                          }
+                        ]
+                      );
+                  }
+                  else {
+                      $( "#dialog-confirm" ).dialog( "option", "buttons",
+                        [
+                          {
+                            text: "Voltar",
+                            click: function() {
+                              $( this ).dialog( "close" );
+                              window.history.go(-1);
+                            }
+                          }
+                        ]
+                      );
+                  }
+               });
+               $( "#dialog-confirm" ).scrollTop(0);
+           }
+           // Se o usuário está deslogado, exibe dialog com links para login ou cadastro
+           else {
+
+               $( "#dialog-anon" ).dialog({
+                   resizable: false,
+                   height: "auto",
+                   width: 400,
+                   modal: true,
+                   open: function(event, ui) {
+                       $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+                   },
+                   buttons: {
+                       'Voltar': function() {
+                           $(this).dialog('close');
+                           window.history.go(-1);
+                       }
+                   }
+               });
+            }
+       });
+  </script>
+  </metal:js>
+
+  <metal:main fill-slot="main">
+
+  <h1>Cadastrar boa prática</h1>
+  <hr>
+  <br />
+<!-- Mostrar quando o usuario tiver logado  -->
+  <div id="main-div" anon=""
+       tal:define="isAnon context/@@plone_portal_state/anonymous;
+                   termo view/getTermo;"
+       tal:attributes="anon isAnon">
+
+    <div id="dialog-confirm" title="Termo de Uso"
+         tal:condition="not: isAnon" style="font-size: small">
+
+     <tal:termo condition="termo">
+     <div tal:condition="not: view/status">
+
+      <h2 tal:content="termo/Title"></h2>
+
+          <p tal:replace="structure termo/text/raw"
+             tal:condition="termo/text"></p>
+
+     <label>Concordo com os termos de uso da inscrição?</label> <input type="checkbox" id="accept-term" />
+     </div>
+    </tal:termo>
+
+      </div>
+      <div tal:condition="not: isAnon">
+        <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+      </div>
+
+      <div tal:condition="isAnon">
+           <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span> Desculpe, identificamos que você não está logado ou não tem cadastro.</p>
+      </div>
+
+<!-- Mostrar quando o usuário não tiver logado -->
+      <div id="dialog-anon" title="Verifica Usuário"
+           tal:condition="isAnon" style="font-size: large">
+           <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span> Desculpe, identificamos que você não está logado ou não tem cadastro.</p>
+           <a class="butao" href="" title="Efetuar login"
+               tal:define="context_url context/absolute_url"
+               tal:attributes="href string:${context_url}/login?came_from=${context_url}/nova-boa-pratica">
+               Já sou cadastrado
+           </a>
+
+       <a class="butao" href="" title="Efetuar cadastro"
+           tal:attributes="href string:${context/absolute_url}/create-new-user">
+           Quero me cadastrar
+       </a>
+      </div>
+ </div>
+</metal:main>
+</html>
