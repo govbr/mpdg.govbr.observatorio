@@ -272,7 +272,7 @@
                     </div>
                     <div class="right"
                          tal:condition="view/canManageComments">
-                        <a class="btn btn-default" tal:attributes="href string: ${context/absolute_url}/manage-comments-view"
+                        <a class="btn btn-default" tal:attributes="href string: ${context/absolute_url}/@@manage-comments-view"
                            tal:content="python: '(%s) Comentário%s Pendentes' % (qtd_pending, (qtd_pending != 1) and 's' or '')"></a>
                     </div>
 
@@ -305,7 +305,7 @@
                     </div>
 
                 </div> -->
-            
+
                 </div>
             </div>
         </div>

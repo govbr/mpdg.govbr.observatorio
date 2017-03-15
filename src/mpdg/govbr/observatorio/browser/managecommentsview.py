@@ -25,9 +25,9 @@ class managecommentsview(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         brain   = catalog.searchResults(
-            portal_type  = 'Comentario',
-            review_state  = 'pending',
-            sort_on      = 'modified',
+            portal_type='Comentario',
+            review_state='pending',
+            sort_on='modified',
             path=path
         )
 
@@ -39,7 +39,7 @@ class managecommentsview(grok.View):
                 'email': obj.getEmail(),
                 'text': obj.getComentario(),
                 'url' : obj.absolute_url(),
-                
+                'uid': obj.UID()
             })
 
         return comment

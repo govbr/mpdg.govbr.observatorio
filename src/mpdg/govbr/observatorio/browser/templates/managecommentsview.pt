@@ -7,7 +7,7 @@
 
 <metal:block fill-slot="main">
 <br />
-  <h2 class="documentFirstHeading">Painel de Administração / Boas Práticas / </h2>
+  <h2 class="documentFirstHeading">Painel de Administração / Boas Práticas / Comentários</h2>
 <hr />
   <div class="container-results"
        tal:define="comment view/cmt_pendentes;
@@ -31,7 +31,7 @@
                     <td><span tal:replace="structure item/email">email</span></td>
 
                     <td><span tal:content="item/text">Comentário </span></td>
-                    
+
 
                     <td>
                         <a href="" class="link-actions"
@@ -42,7 +42,7 @@
                         </a>
                         <a href="" class="link-actions"
                            title="Excluir comentário"
-                           tal:attributes="href string:${item/url}/delete_confirmation">
+                           tal:attributes="href string:${item/url}/@@deletar_comentario?uids=${item/uid}">
                            <img width="22" height="20" alt="Excluir Comentário"
                                 src="++resource++mpdg.govbr.observatorio/icon-x.png" />
                         </a>
@@ -62,7 +62,7 @@
     </div>
       <a href=""
         title="Voltar Observatório"
-              tal:attributes="href string:${portal_url}/sobre/observatorio/">Voltar
+              tal:attributes="href context/absolute_url">Voltar
       </a>
   </div>
 </metal:block>

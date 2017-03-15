@@ -67,34 +67,32 @@ def notify_admin_new_comment(context, event):
 @grok.subscribe(IComentario, IActionSucceededEvent)
 def notify_user_comment_published(context, event):
     """notifica o usuario que seu comentario foi publicado"""
-    # context.getEmail()
-    url_da_pratica = get_pratica_url(context)
+    if event.action == 'publish':
+        url_da_pratica = get_pratica_url(context)
+        message = """Seu comentário foi aprovado
 
-    message = """Seu comentário foi aprovado
+                            link para visualizar  prática %s""" %(url_da_pratica)
 
-                        link para visualizar  prática %s""" %(url_da_pratica)
+        address = context.getEmail()
 
-    address = context.getEmail()
+        subject = 'Seu comentário foi aprovado'
 
-    subject = 'Seu comentário foi aprovado'
-
-    return simple_send_mail(message,address,subject)
-
-
-@grok.subscribe(IComentario, IObjectRemovedEvent)
-def notify_user_comment_rejected(context, event):
-    """notifica o usuario que seu comentario foi rejeitado"""
-
-    url_da_pratica = get_pratica_url(context)
-
-    message = """Seu comentário foi rejeitado pois fere as políticas de uso do sítio/Política de Privacidade
-
-                        link para visualizar  prática %s""" %(url_da_pratica)
-    address = context.getEmail()
-    subject='seu comentário foi rejeitado'
+        return simple_send_mail(message,address,subject)
 
 
-    return simple_send_mail(message,address,subject)
+# @grok.subscribe(IComentario, IObjectRemovedEvent)
+# def notify_user_comment_rejected(context, event):
+#     """notifica o usuario que seu comentario foi rejeitado"""
+#     url_da_pratica = get_pratica_url(context)
+
+#     message = """Seu comentário foi rejeitado pois fere as políticas de uso do sítio/Política de Privacidade
+
+#                         link para visualizar  prática %s""" %(url_da_pratica)
+#     address = context.getEmail()
+#     subject='seu comentário foi rejeitado'
+
+
+#     return simple_send_mail(message,address,subject)
 
 
 
