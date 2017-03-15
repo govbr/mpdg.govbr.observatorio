@@ -78,22 +78,3 @@ def notify_user_comment_published(context, event):
         subject = 'Seu comentário foi aprovado'
 
         return simple_send_mail(message,address,subject)
-
-
-# @grok.subscribe(IComentario, IObjectRemovedEvent)
-# def notify_user_comment_rejected(context, event):
-#     """notifica o usuario que seu comentario foi rejeitado"""
-#     url_da_pratica = get_pratica_url(context)
-
-#     message = """Seu comentário foi rejeitado pois fere as políticas de uso do sítio/Política de Privacidade
-
-#                         link para visualizar  prática %s""" %(url_da_pratica)
-#     address = context.getEmail()
-#     subject='seu comentário foi rejeitado'
-
-
-#     return simple_send_mail(message,address,subject)
-
-
-
-
