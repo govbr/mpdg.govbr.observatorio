@@ -51,6 +51,18 @@
     handler=".events.notify_admin_new_comment"
     />
 
+  <!-- <subscriber
+    for="mpdg.govbr.observatorio.content.interfaces.IComentario
+         Products.CMFCore.interfaces.IActionSucceededEvent"
+    handler=".events.notify_user_comment_published"
+    /> -->
+
+  <!-- <subscriber
+  for="mpdg.govbr.observatorio.content.interfaces.IComentario
+       OFS.interfaces.IObjectRemovedEvent"
+  handler=".events.notify_user_comment_rejected"
+  /> -->
+
   <!-- OFS.interfaces.IObjectRemovedEvent -->
 
   <browser:viewlet

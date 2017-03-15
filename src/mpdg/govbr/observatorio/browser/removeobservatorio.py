@@ -7,7 +7,16 @@ class RemoveObservatorioFolder(BrowserView):
     def __call__(self):
         portal = api.portal.get()
         sobre = portal['sobre']
-        sobre._delObject('observatorio', suppress_events=True)
+        sobre._delObject('copy_of_observatorio', suppress_events=True)
+        import transaction; transaction.commit()
+        return 'folder deleted'
+
+
+class RemoveObservatorioFolder2(BrowserView):
+    def __call__(self):
+        portal = api.portal.get()
+        sobre = portal['sobre']
+        sobre._delObject('observatorio-2', suppress_events=True)
         import transaction; transaction.commit()
         return 'folder deleted'
 
