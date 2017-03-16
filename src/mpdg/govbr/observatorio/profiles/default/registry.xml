@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<registry>
+    <record interface="mpdg.govbr.observatorio.controlpanel.IObservatorio_email" field="adm_observatorio">
+    <value>catia.parreira@planejamento.gov.br</value>
+  </record>
+</registry>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<contentrules>
+    <rule
+        name="move_arquivo_biblioteca"
+        title="Move Arquivo Biblioteca"
+        description="Ao criar uma Boa Prática, o documento anexado deve ser validado. Após o documento (Arquivo Biblioteca) alterar o estado de Pendente para o Público, o mesmo será visualizado na área Biblioteca."
+        event="Products.CMFCore.interfaces.IActionSucceededEvent"
+        enabled="True"
+        stop-after="False">
+        <conditions>
+            <condition type="plone.conditions.PortalType">
+                <property name="check_types">
+                    <element>ArquivoBiblioteca</element>
+                </property>
+            </condition>
+            <condition type="plone.conditions.WorkflowTransition">
+                <property name="wf_transitions">
+                    <element>publish</element>
+                </property>
+            </condition>
+        </conditions>
+        <actions>
+            <action type="plone.actions.Move">
+                <property name="target_folder">/documentos-e-arquivos</property>
+            </action>
+        </actions>
+    </rule>
+
+    <assignment
+        location="/sobre/observatorio"
+        name="move_arquivo_biblioteca"
+        enabled="True"
+        bubbles="True"
+        />
+
+</contentrules>

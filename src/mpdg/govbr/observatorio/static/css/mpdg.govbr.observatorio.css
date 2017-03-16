@@ -1,0 +1,245 @@
+@CHARSET "UTF-8";
+
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table; }
+.clearfix:after {
+  clear: both; }
+
+#content-core { margin: 5px; }
+
+table.datagridwidget-table-view {
+    border-collapse: separate !important;
+}
+
+.formControls { float: right; }
+.formControls input { padding: 0 30px; }
+.formControls #form-buttons-voltar {
+    float: left;
+    margin-right: 5px;
+}
+
+input[type="password"] {
+	margin: 0;
+	padding: 3px;
+	border: 1px solid #000;
+	background-color: #fff;
+	color: #000;
+	text-indent: 2px;
+	font-size: 12px;
+	font-family: "open_sansregular", Arial, Helvetica, sans-serif;
+}
+
+
+/* Layout do tipo Boa Prática */
+
+.boa-pratica .container-info {
+	margin: 10px 0;
+	padding: 10px 0;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+	line-height: 20px;
+}
+
+.boa-pratica .pratica-contents .field-contents {
+	margin: 30px 0;
+}
+
+.boa-pratica .pratica-contents .pratica-tags #category {
+	margin-top: 0; 
+	padding-top: 0; 
+	border-top: 0; 
+}
+
+.pratica-comments {
+	margin-top: 20px;
+	border-top: 5px solid;
+	padding-top: 10px;
+}
+
+.pratica-comments .title {
+	padding-bottom: 10px;
+	border-bottom: 1px solid;
+	margin-bottom: 20px;
+}
+
+.document-info ul {
+	list-style-type: none !important;
+	margin-left: 0 !important;
+
+	margin-bottom: 15px;
+}
+
+.document-info ul li {
+	list-style: none !important;
+}
+
+.related-itens { 
+	margin-top: 45px;
+	border-top: solid 5px #000;
+	width: 100%;
+}
+
+.related-itens .title-related {
+	padding-top: 10px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+	border-bottom: 1px solid #000;
+	font-size: 13pt;
+}
+
+.related-itens .content-related {
+	float: left;
+	width: 31.5%;
+	padding-bottom: 25px;
+	padding-top: 30px;
+	box-sizing: border-box;
+	border-top: 1px solid;
+	
+	margin-left: 6px;
+	margin-right: 6px;
+	margin-top: -1px;
+}
+
+.related-itens .content-related > div {
+	padding-bottom: 10px;
+}
+
+.related-itens .content-related .file-title {
+ 	word-wrap: break-word;
+}
+
+.related-itens .content-related .file-info {
+	font-size: 9pt;
+}
+
+.related-itens .content-related .file-info > div{
+	float: left;
+}
+
+.related-itens .content-related .file-info ul,
+.related-itens .content-related .file-info li {
+	margin-left: 2px !important;
+	margin-bottom: 0 !important;
+	list-style: none !important;
+}
+
+/* Layout do formulário de edição da Boa Prática */
+
+.kssattr-formname-boa-pratica-edit textarea {
+	min-height: 150px;
+	resize: vertical !important;
+    font-size: 1em !important;
+    font-family: open_sansregular, Arial, Helvetica, sans-serif !important;
+}
+
+#formfield-form-widgets-esfera span {
+        background-color: #FFF;
+        color: #000;
+}
+
+#formfield-form-widgets-atuacao span {
+        background-color: #FFF;
+        color: #000;
+}
+
+/* Layout para view Termo de uso */
+.action-buttons input{
+        margin:5px;
+}
+
+/* CSS dos BOTÃO  */
+
+.butao {
+        display: inline-block;
+        background-color: #ccc;
+        color: #444;
+        padding: 10px 20px;
+        text-decoration: none;
+        box-sizing: border-box;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        border: 0px;
+}
+
+
+.
+ .butao:hover {
+        background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.15));
+        cursor: pointer;
+}
+
+.link-actions {
+	margin-right: 5px;
+}
+
+/* Layout dos comentário  */
+
+
+.form-new-comment textarea {
+  height: 100px;
+}
+
+
+
+.comment-container {
+  margin-top: 70px;
+}
+
+.comment-container .replies-container {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid;
+}
+
+.reply-content {
+    border-bottom: 1px solid;
+    padding: 10px;
+}
+
+.reply-content .info{
+    margin-bottom: 10px;
+}
+
+.replies-container .reply-content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.replies-container .btn {
+  border-bottom: 0.1em solid #ccc !important;
+  color: #333333 !important;
+}
+
+.reply-content .status-aprovado {
+  color: rgb(0, 211, 0);
+}
+
+.reply-content .status-reprovado {
+  color: red;
+}
+
+.message-box {
+  padding: 15px 10px;
+  border: 1px solid;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+  .message-box.info {
+    background: #EDEDED;
+    border-color: #B0B0B0;
+  }
+
+  .message-box.error {
+    background: #FFD7D7;
+    border-color: #FF8E8E;
+  }
+
+input[name="skos-input"] {width: 100}
+
+#form-widgets-comentario {
+    height: 100px;
+
+}

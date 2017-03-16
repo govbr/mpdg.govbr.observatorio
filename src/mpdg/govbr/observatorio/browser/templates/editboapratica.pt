@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="mpdg.govbr.observatorio">
+
+    <metal:js fill-slot="javascript_head_slot">
+        <script type="text/javascript">
+            $(document).ready(function(){
+                function hideWysiwygButtons() {
+                    var buttons = [
+                        "#form-widgets-description_image", "#form-widgets-description_scembedder",
+                        "#form-widgets-description_code"
+                    ]
+                    buttons.forEach(function(btn) {
+                        $(btn).parent().empty();
+                    });
+                }
+                $(window).bind('load', function(){ hideWysiwygButtons(); });
+            });
+        </script>
+    </metal:js>
+
+      <metal:main fill-slot="main">
+          <h1>Editar boa prática</h1>
+          <hr>
+          <br />
+          <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+
+
+      </metal:main>
+
+</html>

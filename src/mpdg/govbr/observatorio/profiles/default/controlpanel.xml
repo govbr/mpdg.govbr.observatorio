@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<object
+  name="portal_controlpanel"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="mpdg.govbr.observatorio">
+  <configlet
+    title="Configurações do observatorio"
+    action_id="adm-observatorio"
+    appId="observatorio"
+    category="Products"
+    condition_expr=""
+    url_expr="string:${portal_url}/@@observatorio-adm"
+    icon_expr=""
+    visible="True"
+    i18n:attributes="title">
+      <permission>Manage portal</permission>
+  </configlet>
+
+</object>

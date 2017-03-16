@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="mpdg.govbr.observatorio">
+
+    <head>
+        <!--metal:block fill-slot="top_slot">
+            <tal:dummy tal:define="disable_column_one python:request.set('disable_plone.leftcolumn',1);"/>
+
+        </metal:block-->
+    </head>
+    <body>
+        <metal:main fill-slot="main" >
+
+            <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+            <metal:title define-slot="content-title">
+                <h2>Cadastro</h2>
+                
+                <div>
+                    <hr />
+                </div>
+            </metal:title>
+            
+            <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+            
+            <div class="content-core">
+                
+                <div>
+                    Foi enviado um e-mail de confirmação para seu e-mail.<br>
+                    Por favor, acesse seu email para continuar seu cadastro. <br/><br/>
+
+                    Obrigado.
+                </div>                
+            </div>
+            
+            <div id="viewlet-below-content-body" tal:content="structure provider:plone.belowcontentbody" tal:condition="not:ajax_load" />
+        </metal:main>
+    </body>
+</html>

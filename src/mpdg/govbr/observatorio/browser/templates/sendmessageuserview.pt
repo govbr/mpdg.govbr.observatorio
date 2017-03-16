@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="mpdg.govbr.observatorio"
+      metal:use-macro="context/main_template/macros/master">
+
+<metal:block fill-slot="main">
+    
+    <h1 class="documentFirstHeading">Observatório | Revisão de práticas</h1>
+
+    <div class="tile tile-default" style="margin-top:10px;">
+        <div class="outstanding-header">
+            <h2 class="outstanding-title" tal:content="view/label | nothing" />
+        </div>
+    </div>
+
+    <div id="content-core">
+        <table class="table listing">
+            <thead>
+                <tr>
+                    <th>Enviar email para</th>
+                    <th>Título da prática</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:define="pratice view/pratice">
+                    <td tal:content="view/email">usuario@email.com</td>
+                    <td tal:content="pratice/title">Good Pratice title</td>
+                    <td tal:content="pratice/description">Good pratice description</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <metal:form use-macro="context/@@ploneform-macros/titlelessform" />
+    </div>
+
+</metal:block>
+
+</html>

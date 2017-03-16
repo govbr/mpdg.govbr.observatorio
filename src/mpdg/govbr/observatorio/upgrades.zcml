@@ -1,0 +1,14 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup"
+  i18n_domain="mpdg.govbr.observatorio">
+
+<gs:upgradeStep
+    title="Update content types namespace"
+    description="Update BoaPratica content type to new namespace"
+    source="*"
+    destination="1000"
+    handler=".upgrades.upgrade_boapratica_namespace.upgrade_boapratica"
+    profile="mpdg.govbr.observatorio:default" />
+
+</configure>

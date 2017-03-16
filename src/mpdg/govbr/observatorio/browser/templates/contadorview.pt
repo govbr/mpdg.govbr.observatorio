@@ -1,0 +1,1 @@
+<p tal:replace="view/resultado">OK</p>
