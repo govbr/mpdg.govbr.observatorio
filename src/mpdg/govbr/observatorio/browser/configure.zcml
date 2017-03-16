@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="mpdg.govbr.observatorio">
+
+  <include package="plone.app.contentmenu" />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="jbot" />
+
+<!-- Views -->
+
+  <browser:page
+      name="del_observatorio_folder"
+      permission="cmf.ManagePortal"
+      class=".removeobservatorio.RemoveObservatorioFolder"
+      for="*"
+      />
+
+  <browser:page
+      name="clear_boaspraticas"
+      permission="cmf.ManagePortal"
+      class=".removeobservatorio.ClearBoasPraticas"
+      for="*"
+      />
+
+</configure>

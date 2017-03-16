@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="mpdg.govbr.observatorio"
+      metal:use-macro="context/main_template/macros/master">
+
+<metal:block fill-slot="main">
+<br />
+  <h2 class="documentFirstHeading">Painel de Administração / Boas Práticas / Práticas Pendentes</h2>
+<hr />
+  <div class="container-results"
+       tal:define="boapraticas view/msg_pendentes;
+                   portal_url portal_state/portal_url">
+
+    <div class = "field">
+          <table  class="listing auto-table" width="60%">
+              <thead>
+                <tr >
+                     <th>Título</th>
+                     <th>Descrição</th>
+                     <th>Ações</th>
+                </tr>
+              </thead>
+             <tbody>
+                <tr tal:repeat="item boapraticas">
+                    <td>
+                        <a href="" title=""
+                           tal:attributes="href item/url;
+                                           title string:Visualizar prática ${item/titulo}">
+                            <span tal:content="item/titulo">Título</span>
+                        </a>
+                    </td>
+                    <td><span tal:replace="structure item/descricao">Descrição</span></td>
+                    <td>
+                        <a href="" class="link-actions"
+                           title="Aprovar Prática"
+                           tal:attributes="href string:${item/url}/content_status_modify?workflow_action=publish&uids=${item/UID}">
+                            <img width="22" height="20" alt="Aprovar Prática"
+                                src="++resource++mpdg.govbr.observatorio/icon-ok.jpg" />
+                        </a>
+                        <a href="" class="link-actions"
+                           title="Notificar usuário"
+                           tal:attributes="href string:${portal_url}/@@send_message_user?uids=${item/UID}">
+                           <img width="22" height="20" alt="Notificar usuário"
+                                src="++resource++mpdg.govbr.observatorio/icon-send-mail.png" />
+                        </a>
+                    </td>
+                </tr>
+             </tbody>
+          </table>
+          <table class="listing auto-table"
+                       width="100%"
+                       tal:condition="not: boapraticas">
+                  <tr>
+                        <td colspan="5">
+                          <center><p>Nenhuma prática pendente até o momento.</p></center>
+                        </td>
+                  </tr>
+          </table>
+    </div>
+      <a href=""
+        title="Voltar Observatório"
+              tal:attributes="href string:${portal_url}/sobre/observatorio/">Voltar
+      </a>
+  </div>
+</metal:block>
+
+</html>

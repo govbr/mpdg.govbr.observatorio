@@ -1,0 +1,316 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="mpdg.govbr.observatorio">
+
+    <body>
+    <metal:js fill-slot="javascript_head_slot">
+        <script>
+        $( function() {
+// Inicio dialog delete
+            $( ".dialog" ).dialog({
+                resizable: false,
+                autoOpen: false,
+                modal: true,
+                open: function(event, ui) {
+                    $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+                }
+            });
+            $( ".delete" ).on( "click", function() {
+                $( ".dialog" ).dialog( "open" );
+            });
+            $( ".cancel-delete" ).click(function(e) {
+                e.preventDefault();
+                $(".dialog").dialog( "close" );
+            });
+// Fim dialog delete
+
+//Inicio Dialog Published
+            $( ".dialogPublished" ).dialog({
+                resizable: false,
+                autoOpen: false,
+                modal: true,
+                open: function(event, ui) {
+                    $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+                }
+            });
+            $( ".published").on( "click", function() {
+                $( ".dialogPublished" ).dialog( "open" );
+            });
+            $( ".cancel-published" ).click(function(e) {
+                e.preventDefault();
+                $(".dialogPublished").dialog( "close" );
+// Fim Dialog Published
+            });
+        });
+        </script>
+
+    </metal:js>
+
+        <metal:main fill-slot="main" >
+            <h1>Visualizar boa prática</h1>
+            <hr />
+            <br />
+            <div id="viewlet-above-content-title" tal:content="structure provider:plone.abovecontenttitle" tal:condition="not:ajax_load" />
+
+            <table class="auto-table">
+                <tr>
+                    <td width="500">
+                        <metal:title define-slot="content-title">
+                            <h2 tal:content="context/Title" style="float: left;"></h2>
+                        </metal:title>
+                    </td>
+                    <td>
+                        <div tal:condition="view/is_owner">
+                            <a href="" tal:attributes="href string:${context/absolute_url}/editar-boa-pratica" class="btn btn-warning btn-xs" style="float: right;">Editar</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <!--div id="viewlet-below-content-title" tal:content="structure provider:plone.belowcontenttitle" tal:condition="not:ajax_load" /-->
+            <div id="viewlet-above-content-body" tal:content="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+
+            <div class="content-core boa-pratica">
+
+                <div class="container-info clearfix">
+
+                    <div class="info-pratica left">
+                        <p><span>Adicionado em: <span tal:content="python: context.created().strftime('%d/%m/%Y')"></span></span><br />
+                        <span>Acessos: <span tal:replace="view/getAccessObject"></span></span>
+                        </p>
+                    </div>
+
+<!--                     <div class="rate-pratica">
+                        <tal:ratecontentview define="ratecontentview nocall:context/@@ratecontentview;"
+                                             replace="structure python:ratecontentview()"></tal:ratecontentview>
+                    </div> -->
+                </div>
+
+                <div class="pratica-contents">
+
+                    <div class="field-contents" tal:define="orgs_part context/getOrgparticipantes"
+                         tal:condition="orgs_part">
+                        <h3>
+                            Órgãos Participantes
+                        </h3>
+
+                        <p tal:content="orgs_part"></p>
+                    </div>
+
+                    <div class="field-contents" tal:define="description context/Description|nothing"
+                         tal:condition="description">
+                        <h3>
+                            Descrição da Prática
+                        </h3>
+
+                        <p tal:replace="structure description"></p>
+                    </div>
+
+                    <div class="field-contents" tal:define="urls context/getSitesrelacionados|nothing"
+                         tal:condition="urls">
+                        <h3>
+                            URL's
+                        </h3>
+
+                        <div class="">
+                            <tal:rep repeat="url_rel view/getSitesRelacionados">
+                                <p>
+                                    <span tal:content="string:${url_rel/description}:"><br />
+                                    <a tal:attributes="href url_rel/url" target="_blank"
+                                       tal:content="url_rel/url"></a>
+                                </p>
+                            </tal:rep>
+                        </div>
+                    </div>
+
+                    <div class="field-contents" tal:condition="view/getCategoria">
+                        <h3>
+                            Assunto
+                        </h3>
+
+                        <p tal:content="view/getCategoria"></p>
+                    </div>
+
+                    <div class="pratica-tags">
+                        <div tal:replace="structure provider:plone.belowcontentbody" />
+                    </div>
+
+                    <div class="field-contents"
+                         tal:define="files view/getFilesRelated|nothing">
+
+
+                        <table class="auto-table">
+                            <tr>
+                                <td>
+                                    <h3>Anexos</h3>
+                                </td>
+                                <td>
+                                    <div class="tile-footer" style="float: right;" tal:condition="view/is_owner">
+                                        <a href=""
+                               tal:attributes="href string:${context/absolute_url}/@@coppe_media_uploader" class="btn btn-info">Adicionar anexo</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <tal:anexo condition="files">
+                        <table class="auto-table">
+                            <thead>
+                                <tr>
+                                    <th width="60">Formato</th>
+                                    <th>&nbsp;&nbsp;Título</th>
+                                    <th width="100">Data</th>
+                                    <th width="100">Tamanho</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tal:rep repeat="file files">
+                                    <tr>
+                                        <td>
+                                            <div class="ico-filetype-area">
+                                                <span tal:content="file/ctype"></span>
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;
+                                             <a tal:attributes="href file/url;
+                                                               alt file/title;" target="_blank"><span tal:content="file/title"></span></a>
+
+
+                                            <!-- Publicar Anexo Dialog  -->
+                                                <div class="dialogPublished" title="Publicar Anexo" style="font-size: large">
+                                                    <p>Você realmente quer publicar este Anexo? </p>
+                                                        <a href="" tal:define="UID file/UID" tal:attributes="href string:${context/absolute_url}/@@publicar_arq_biblioteca?uids=${UID}" class="btn  btn-success">Sim</a>
+                                                        <a href="" tal:attributes="href string:${context/absolute_url}" class="btn btn-danger cancel-published ">Não</a>
+                                                </div>
+                                                <button target=""
+                                                        tal:define="status file/status"
+                                                        tal:condition="python: view.user_has_permission() and status != 'published'"
+                                                        class="btn  btn-success published"
+                                                        tal:attributes="target file/UID">Publicar</button>
+
+
+
+                                           <!--Excluir Anexo Dialog   -->
+                                            <div class="dialog" title="Deletar Anexo " style="font-size: large">
+                                                <p>Você realmente quer apagar este Anexo?</p>
+                                                    <a href="" tal:define="UID file/UID" tal:attributes="href string:${context/absolute_url}/@@deletar_arq_biblioteca?uids=${UID}" class="btn btn-danger delete" >Sim</a>
+                                                    <a href="" tal:attributes="href string:${context/absolute_url}" class="btn btn-success cancel-delete">Não</a>
+                                            </div>
+                                            <button id="delete"
+                                                    target=""
+                                                    tal:condition="python:view.is_owner() or view.user_has_permission()"
+                                                    class="btn btn-danger delete"
+                                                    tal:attributes="target file/UID">Exluir</button>
+
+                                        </td>
+                                        <td>
+                                            <span tal:content="file/created"></span>
+                                        </td>
+                                        <td>
+                                            <span tal:content="file/size"></span>
+                                        </td>
+                                    </tr>
+                                </tal:rep>
+
+                            </tbody>
+                        </table>
+
+                        </tal:anexo>
+                        <p tal:condition="not: files">
+                            Nenhum anexo associado à esta Boa Prática.
+                            <a href="" tal:condition="view/is_owner"
+                               tal:attributes="href string:${context/absolute_url}/@@coppe_media_uploader" >
+                                Adicionar novo anexo
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pratica-comments">
+
+                <div class="title">
+                    <h2>
+                        Comente essa Prática!
+                    </h2>
+                </div>
+
+                <div class="instructions">
+                    <ol>
+                       <li>Preencha o formulário.</li>
+                       <li>Clique no botão comentar.</li>
+                       <li>Acesse sua caixa de mensagens e siga as instrucões para confirmar ou cancelar seu comentário.</li>
+                       <li>Após a sua confirmação, o comentário será encaminhado para a moderação.</li>
+                       <li><p>Ao comentar, o usuário concorda com as <a href="https://www.governoeletronico.gov.br/politica-de-privacidade" > Políticas de Uso </a> do sítio.</p></li>
+                    </ol>
+                </div>
+
+
+
+        <div class="container-form">
+            <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+        </div>
+
+        <div class="comment-container"
+             tal:define="data view/getDataReplies|nothing;
+                         qtd_replies data/qtd_replies|nothing;
+                         qtd_pending data/qtd_pending|nothing;
+                         replies data/data|nothing;">
+            <div class="replies-container">
+
+                <div class="clearfix">
+                    <div class="left">
+                        <h3>
+                        <span tal:content="qtd_replies"></span>
+                            Comentário<span tal:condition="python:qtd_replies != 1" tal:replace="string:s"></span>
+                        </h3>
+                    </div>
+                    <div class="right"
+                         tal:condition="view/canManageComments">
+                        <a class="btn btn-default" tal:attributes="href string: ${context/absolute_url}/@@manage-comments-view"
+                           tal:content="python: '(%s) Comentário%s Pendentes' % (qtd_pending, (qtd_pending != 1) and 's' or '')"></a>
+                    </div>
+
+                </div>
+
+                <div class="replies">
+
+                <tal:rep repeat="reply replies">
+                    <div class="reply-content">
+
+                        <div class="info">
+                            <strong tal:content="reply/name"></strong> | <span>Postado em <span tal:replace="reply/created"></span></span>
+                        </div>
+
+                        <div class="text-value">
+                            <p tal:content="structure reply/text">
+                            </p>
+                        </div>
+
+                    </div>
+                </tal:rep>
+                <!-- <div class="reply-content">
+
+                    <div class="info">
+                        <strong>Governo Eletrônico</strong> | <span>Postado em 13/03/17, 11:25</span>
+                    </div>
+
+                    <div class="text-value">
+                        <p>Testando o comentario</p>
+                    </div>
+
+                </div> -->
+
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </metal:main>
+    </body>
+</html>
