@@ -22,6 +22,7 @@ from mpdg.govbr.observatorio.browser.utils import ContadorManager
 from mpdg.govbr.observatorio.config import PROJECTNAME
 from Products.statusmessages.interfaces import IStatusMessage
 from plone.registry.interfaces import IRegistry
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 
 FILE_CONTENT_TYPES = ArquivoBiblioteca.dict_file_content_types
@@ -59,30 +60,52 @@ class BoaPraticaView(form.SchemaForm):
             self.status = self.formErrorsMessage
             return
 
-            
-
-
-        #TODO: Exibir mensagem que o comentario foi enviado para aprovação
         messages = IStatusMessage(self.request)
         messages.add(u"Obrigado. Seu comentário foi enviado para aprovação.", type=u"info")
-        
+
         nome     = data['nome']
         email    = data['email']
         comentario = data['comentario']
 
-        
+        title = '{0} - {1}'.format(nome, email)
 
-        criar_comentario= api.content.create(
-            type = 'Comentario',
-            nome = nome,
-            email = email,
-            created=datetime.datetime.now(),
-            title = '{0} - {1}'.format(nome, email),
-            comentario = comentario,
-            container= self.context
-             )
-      
+        normalizer = getUtility(IIDNormalizer)
+        objid = self.generateIdForContext(self.context, normalizer.normalize(title))
+
+        pt = api.portal.get_tool('portal_types')
+        type_info = pt.getTypeInfo('Comentario')
+        content = type_info._constructInstance(
+            self.context,
+            objid,
+            title=title
+        )
+        content.setNome(nome)
+        content.setEmail(email)
+        content.setCreated(datetime.datetime.now())
+        content.setComentario(comentario)
+
         return self.request.response.redirect(self.context.absolute_url())
+
+    def generateIdForContext(self, ctx, id, count=0):
+        """
+            Método que gera um id para um objeto dentro do contexto,
+            caso o id já exista no contexto ele adiciona numero na frente
+
+            @param ctx: Contexto para qual será gerado o Id
+            @param id: O id do objeto
+            @param count: Contador que vai a frente do id de entrada
+
+            @return: valor de um id que não existe no contexto
+        """
+
+        if getattr(ctx, id, False):
+            if count > 0:
+                id = id[:(len(str(count))+1)*-1]
+            count += 1
+            id = '%s-%s' % (id, count)
+            return self.generateIdForContext(ctx, id, count)
+        else:
+            return id
 
     def get_ip(self, request):
         """
@@ -157,11 +180,6 @@ class BoaPraticaView(form.SchemaForm):
             except LookupError:
                 return None
 
-     
-
-    
-
-
 #   Verificar se o usuario tem permissão de Modificar o conteúdo do portal
     def user_has_permission(self):
         if api.user.is_anonymous():
@@ -228,7 +246,6 @@ class BoaPraticaView(form.SchemaForm):
 
             return results
 
-
     def canManageComments(self):
         return checkPermission('cmf.RequestReview', self.context)
 
@@ -257,4 +274,3 @@ class BoaPraticaView(form.SchemaForm):
         return brains
 
 
-    
